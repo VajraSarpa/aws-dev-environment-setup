@@ -1,0 +1,260 @@
+# AWS Development Environment - System Overview
+
+## System Components
+
+### Hardware
+- **Local Machine:** 2012 MacBook Pro (thin client)
+- **Remote Server:** AWS EC2 Instance (t3.micro or t3.small)
+- **Storage:** 20GB EBS Volume (expandable)
+
+### Core Infrastructure
+- **Platform:** Ubuntu Server 24.04 LTS
+- **Connection Method:** SSH with VS Code Remote-SSH
+- **Network:** Elastic IP (static address)
+- **Security:** AWS Security Groups, SSH key authentication
+
+## Development Tools Included
+
+### Code Editors & IDEs
+- VS Code (local client with Remote-SSH extension)
+- Vim (terminal editor)
+
+### Version Control
+- Git
+- GitHub SSH integration
+- LFS Dev Script repository
+
+### Programming Languages & Runtimes
+- **Python 3** (with pip, venv, virtualenv)
+- **Node.js LTS** (with npm, yarn)
+- **Go** (latest stable)
+- **Rust** (with cargo)
+- **Java** (OpenJDK 17 with Maven)
+
+### Development Tools
+- Build essentials (gcc, g++, make)
+- Docker & Docker Compose
+- curl, wget
+- tmux (terminal multiplexer)
+- htop (system monitor)
+
+### AWS Tools
+- AWS CLI (optional, for instance management)
+
+### Python Packages
+- pip, pipenv
+- black, flake8, pylint (linting/formatting)
+- pytest (testing)
+- ipython (interactive shell)
+
+### Node.js Global Packages
+- TypeScript, ts-node
+- ESLint, Prettier
+- nodemon, pm2
+
+## Performance Metrics
+
+### t3.micro Instance
+- **vCPUs:** 1
+- **RAM:** 1 GB
+- **Network:** Up to 5 Gigabit
+- **Baseline CPU:** 10% with burst capability
+- **Best For:** Light development, scripting, small projects
+
+### t3.small Instance
+- **vCPUs:** 2
+- **RAM:** 2 GB
+- **Network:** Up to 5 Gigabit
+- **Baseline CPU:** 20% with burst capability
+- **Best For:** Medium projects, compilation, Docker containers
+
+### Expected Performance
+- **Code Editing:** Instant (local VS Code UI)
+- **File Operations:** Near-instant for typical project sizes
+- **Git Operations:** Fast (depends on repo size)
+- **Build Times:** 
+  - Node.js: 2-5x faster than 2012 MacBook
+  - Python: 2-4x faster than 2012 MacBook
+  - Docker builds: Depends on instance size
+- **Terminal Responsiveness:** <50ms latency (with good internet)
+
+### Storage Performance
+- **EBS gp3 Volume:**
+  - Baseline: 3,000 IOPS
+  - Throughput: 125 MB/s
+  - More than adequate for development workloads
+
+## Cost Breakdown
+
+### Monthly Costs (USD)
+
+**t3.micro (24/7 uptime):**
+- Compute: ~$7.50
+- Storage (20GB): ~$2.00
+- Elastic IP (while running): Free
+- **Total: ~$9.50/month**
+
+**t3.micro (8 hours/day, stopped overnight):**
+- Compute: ~$2.50
+- Storage (20GB): ~$2.00
+- Elastic IP (while stopped): ~$3.60
+- **Total: ~$8.10/month**
+
+**t3.small (24/7 uptime):**
+- Compute: ~$15.00
+- Storage (20GB): ~$2.00
+- Elastic IP (while running): Free
+- **Total: ~$17.00/month**
+
+**Data Transfer:**
+- First 100GB/month: Free
+- Additional: $0.09/GB (rarely needed for dev work)
+
+### Cost Optimization Tips
+- Stop instance when not in use
+- Use t3.micro for most work
+- Upgrade to t3.small only when needed
+- Release Elastic IP if not using for extended periods
+
+## Network Requirements
+
+### Minimum Internet Speed
+- **Download:** 5 Mbps
+- **Upload:** 1 Mbps
+- **Latency:** <100ms to AWS region
+
+### Recommended Internet Speed
+- **Download:** 25+ Mbps
+- **Upload:** 5+ Mbps
+- **Latency:** <50ms to AWS region
+
+### AWS Region Selection
+- Choose closest region for best latency
+- US-East-1 (Virginia) - Generally cheapest
+- Check latency: `ping ec2.us-east-1.amazonaws.com`
+
+## Features & Capabilities
+
+### What You Can Do
+✓ Full-stack web development (React, Node.js, etc.)
+✓ Python data science and scripting
+✓ Mobile app backend development
+✓ Docker containerization
+✓ Git version control with GitHub
+✓ Run long-running processes (training models, builds)
+✓ Access from any device with internet
+✓ Multiple terminal sessions (tmux)
+✓ File editing with VS Code extensions
+✓ Debugging with VS Code debugger
+✓ Port forwarding for web app testing
+
+### Limitations
+✗ No GUI applications (terminal only)
+✗ No video editing or graphics work
+✗ Limited for heavy compilation (use larger instance)
+✗ Requires internet connection
+✗ Not suitable for real-time gaming development
+✗ GPU workloads require different instance types
+
+## Scalability
+
+### Easy Upgrades
+- **More CPU/RAM:** Stop instance → Change type → Start
+- **More Storage:** Expand EBS volume (no downtime)
+- **Better Network:** Upgrade to larger instance types
+- **GPU Access:** Switch to g4dn or p3 instances (for ML)
+
+### Horizontal Scaling
+- Run multiple instances for different projects
+- Separate dev, staging, production environments
+- Easy to clone environments (AMI snapshots)
+
+## Backup & Recovery
+
+### Automatic Backups
+- Git repositories (push to GitHub regularly)
+- EBS snapshots (manual or scheduled)
+- Dotfiles in version control
+
+### Recovery Time
+- New instance from scratch: ~30 minutes (with automated scripts)
+- Restore from snapshot: ~5 minutes
+- Lost work (if not committed): Depends on last Git push
+
+## Security Features
+
+### Authentication
+- SSH key-pair authentication (no passwords)
+- GitHub SSH keys for repository access
+
+### Network Security
+- Security Groups (firewall rules)
+- SSH-only access (port 22)
+- Optional: IP whitelisting
+
+### Data Security
+- All data in AWS (HTTPS/SSH encrypted)
+- No sensitive data stored locally
+- Regular backups to Git
+
+## Comparison to Local Development
+
+| Feature | 2012 MacBook Pro | AWS EC2 (t3.micro) |
+|---------|------------------|-------------------|
+| CPU Performance | Older dual-core | Modern single-core with burst |
+| RAM | 4-8GB (aging) | 1GB (dedicated) |
+| Storage Speed | HDD/early SSD | Modern SSD (3000 IOPS) |
+| Upgradability | None | Instant (change instance type) |
+| Battery Life | Limited | N/A (cloud-based) |
+| Chrome Support | Outdated | Latest (via terminal) |
+| VS Code Support | Outdated | Latest (via remote) |
+| Network Speed | WiFi dependent | 5 Gigabit to internet |
+| Accessibility | One device only | Any device, anywhere |
+| Cost | Paid upfront | $5-10/month |
+
+## Use Cases
+
+### Perfect For:
+- Web development (frontend + backend)
+- API development
+- Python scripting and automation
+- Learning new languages/frameworks
+- Side projects and portfolio work
+- Studying and coursework
+- Light Docker container work
+- Git-based workflows
+
+### Not Ideal For:
+- Heavy video editing
+- Game development (without GPU)
+- Desktop GUI application development
+- Real-time audio processing
+- Large-scale data processing (use larger instances)
+- Offline work (requires internet)
+
+## Getting Started Checklist
+
+- [ ] AWS account created
+- [ ] Billing alerts configured
+- [ ] EC2 instance launched (t3.micro)
+- [ ] SSH keys generated and configured
+- [ ] Elastic IP allocated and associated
+- [ ] VS Code Remote-SSH extension installed
+- [ ] SSH config file created
+- [ ] Successfully connected via VS Code
+- [ ] LFS Dev Script cloned and run
+- [ ] GitHub SSH keys set up
+- [ ] First project cloned/created
+- [ ] Development workflow tested
+
+## Support Resources
+
+- **AWS Documentation:** https://docs.aws.amazon.com/ec2/
+- **VS Code Remote-SSH:** https://code.visualstudio.com/docs/remote/ssh
+- **LFS Dev Script:** https://github.com/VajraSarpa/LFS-Dev-Script
+- **AWS Free Tier:** https://aws.amazon.com/free/
+
+---
+
+**Last Updated:** November 2024
+**Maintained By:** VajraSarpa
