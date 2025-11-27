@@ -16,6 +16,25 @@ Complete guide and scripts for setting up a cloud-based development environment 
 
 See [aws-dev-environment-setup.md](aws-dev-environment-setup.md) for the complete guide.
 
+## Installation Script
+
+For automated package installation, I use my **[LFS Dev Script](https://github.com/VajraSarpa/LFS-Dev-Script)** which handles all the development tools setup.
+
+### Using the Installation Script
+
+On your EC2 instance:
+```bash
+# Clone the installation script repository
+git clone https://github.com/VajraSarpa/LFS-Dev-Script.git
+cd LFS-Dev-Script
+
+# Run the installation script
+chmod +x install.sh  # or whatever your script is named
+./install.sh
+```
+
+This script installs all necessary development packages and tools for your environment.
+
 ## Cost Estimate
 
 - **t3.micro**: ~$4-5/month (if stopped when not in use)
